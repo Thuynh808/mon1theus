@@ -1,0 +1,22 @@
+[Unit]
+Description=Prometheus Monitoring System
+Documentation=https://prometheus.io/docs/introduction/overview/
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User={{ prometheus_user | default('prometheus') }}
+Group={{ prometheus_group | default('prometheus') }}
+Type=simple
+ExecStart={{ prometheus_bin_path | default('/usr/local/bin/prometheus') }} \
+  --config.file={{ prometheus_config_dir | default('/etc/prometheus') }}/prometheus.yml \
+  --storage.tsdb.path={{ prometheus_data_dir | default('/var/lib/prometheus') }} \
+  --web.listen-address={{ prometheus_web_listen_address | default('0.0.0.0:9090') }} \
+  --log.level={{ prometheus_log_level | default('info') }}
+Restart=on-failure
+RestartSec=5s
+LimitNOFILE=8192
+
+[Install]
+WantedBy=multi-user.target
+

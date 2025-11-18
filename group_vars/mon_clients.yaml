@@ -1,0 +1,26 @@
+---
+# Node exporter
+
+node_exporter_enabled: true
+# Exporter will bind on all interfaces on the configured port
+node_exporter_listen_address: "0.0.0.0:{{ node_exporter_port }}"
+
+# Extra CLI args, if you ever want to customize collectors or behavior
+node_exporter_extra_args: []
+
+# Promtail (log shipper for Loki)
+
+promtail_enabled: true
+
+# Where promtail tracks offsets for each log file
+promtail_positions_dir: /var/lib/promtail/positions
+
+# By default, use the shared log path list from all.yaml
+promtail_client_log_paths: "{{ promtail_log_paths }}"
+
+# Base labels applied to all logs from mon_clients;
+# you can add host-specific labels later using hostvars in templates.
+promtail_client_labels:
+  env: "{{ monitoring_env }}"
+  job: "system-logs"
+

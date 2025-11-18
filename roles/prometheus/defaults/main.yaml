@@ -1,0 +1,25 @@
+---
+# Versioning / download
+prometheus_version: "2.54.1"
+prometheus_arch: "linux-amd64"
+prometheus_tmp_dir: "/tmp"
+
+prometheus_download_url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.{{ prometheus_arch }}.tar.gz"
+
+# User / group
+prometheus_user: prometheus
+prometheus_group: prometheus
+
+# Paths
+prometheus_bin_dir: /usr/local/bin
+prometheus_config_dir: /etc/prometheus
+prometheus_data_dir: /var/lib/prometheus
+prometheus_console_templates_dir: "{{ prometheus_config_dir }}/consoles"
+prometheus_console_libraries_dir: "{{ prometheus_config_dir }}/console_libraries"
+
+# Web / listening
+prometheus_web_port: 9090
+prometheus_web_listen_address: "0.0.0.0:{{ prometheus_web_port }}"
+prometheus_log_level: info
+prometheus_bin_path: "{{ prometheus_bin_dir }}/prometheus"
+

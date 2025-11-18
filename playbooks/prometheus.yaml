@@ -1,0 +1,6 @@
+---
+
+- name: install and configure prometheus
+  hosts: mon1
+  roles:
+    - prometheus

@@ -1,0 +1,82 @@
+---
+####################################
+# Prometheus (mon1)
+
+# Versioning / download – used by the role's tasks
+prometheus_version: "3.7.3"
+prometheus_arch: "linux-amd64"
+prometheus_tmp_dir: "/tmp"
+prometheus_download_url: "https://github.com/prometheus/prometheus/releases/download/v{{ prometheus_version }}/prometheus-{{ prometheus_version }}.{{ prometheus_arch }}.tar.gz"
+
+# User / group
+prometheus_user: prometheus
+prometheus_group: prometheus
+
+# Paths
+prometheus_bin_dir: /usr/local/bin
+prometheus_bin_path: "{{ prometheus_bin_dir }}/prometheus"
+prometheus_config_dir: /etc/prometheus
+prometheus_data_dir: /var/lib/prometheus
+
+# Web / listening
+prometheus_web_port: 9090
+prometheus_web_listen_address: "0.0.0.0:{{ prometheus_web_port }}"
+prometheus_log_level: info
+
+# Global timing – used directly by prometheus_config.j2
+prometheus_scrape_interval: "15s"
+prometheus_evaluation_interval: "15s"
+
+# Where Prometheus reaches Alertmanager
+prometheus_alertmanager_url: "http://localhost:9093"
+
+#####################################
+# Grafana (mon1)
+
+grafana_http_port: 3000
+grafana_root_url: "http://mon1:3000"   # or IP if not using DNS
+grafana_allow_anonymous: false         # switch to true if you want lab-only easy access
+
+grafana_admin_user: admin
+grafana_admin_password: "change-me"    # move to vault later
+
+# Datasources Grafana should auto-provision
+grafana_datasources:
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    isDefault: true
+    url: "http://localhost:9090"
+  - name: Loki
+    type: loki
+    access: proxy
+    isDefault: false
+    url: "http://localhost:3100"
+
+######################################
+# Loki (mon1)
+
+loki_data_dir: /var/lib/loki
+loki_config_dir: /etc/loki
+loki_listen_address: "0.0.0.0:3100"
+loki_retention_period: "7d"
+
+# Alertmanager (mon1)
+
+alertmanager_config_dir: /etc/alertmanager
+alertmanager_data_dir: /var/lib/alertmanager
+alertmanager_web_listen_address: "0.0.0.0:9093"
+
+# Minimal "do nothing" receiver – you can wire in email/Slack later
+alertmanager_receivers:
+  - name: "null-receiver"
+    email_configs: []
+
+# Default routing for alerts; tweak later as you define real alert rules
+alertmanager_default_route:
+  group_by: ['alertname', 'instance']
+  group_wait: "30s"
+  group_interval: "5m"
+  repeat_interval: "3h"
+  receiver: "null-receiver"
+
