@@ -11,6 +11,50 @@ node_exporter_group: node_exporter
 
 node_exporter_bin_dir: /usr/local/bin
 
+# Grafana Alloy
+
+alloy_repo_name: grafana
+alloy_repo_baseurl: https://rpm.grafana.com
+alloy_repo_gpgkey: https://rpm.grafana.com/gpg.key
+
+alloy_package_name: alloy
+alloy_service_name: alloy
+
+alloy_config_file: /etc/alloy/config.alloy
+alloy_env_file: /etc/sysconfig/alloy
+alloy_storage_path: /var/lib/alloy
+
+alloy_loki_url: "http://mon1.lab.streetrack.org:3100/loki/api/v1/push"
+
+# Journald and file logging toggles
+alloy_enable_journal: true
+alloy_enable_file_logs: false
+
+# File targets are only used when alloy_enable_file_logs is true
+alloy_file_targets:
+  - path: /var/log/messages
+    job: system-logs
+    env: lab
+
+# UI and debugging options
+alloy_enable_ui: true
+alloy_ui_listen_ip: "10.2.22.18"   # mon1 IP in your monitoring VLAN
+alloy_ui_port: 12345
+
+alloy_livedebug_enabled: true
+alloy_log_level: info
+
+# User and groups for journald access
+# You may need to verify the actual user created by the package
+alloy_journal_user: alloy
+alloy_journal_groups:
+  - adm
+  - systemd-journal
+
+
+
+
+
 # Promtail (log shipper for Loki)
 
 promtail_enabled: true

@@ -1,0 +1,29 @@
+---
+- name: import grafana GPG key
+  rpm_key:
+    state: present
+    key: "{{ alloy_repo_gpgkey }}"
+
+- name: configure grafana yum repository
+  yum_repository:
+    name: "{{ alloy_repo_name }}"
+    description: grafana
+    baseurl: "{{ alloy_repo_baseurl }}"
+    enabled: true
+    gpgcheck: true
+    repo_gpgcheck: true
+    gpgkey: "{{ alloy_repo_gpgkey }}"
+    sslverify: true
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+    state: present
+
+- name: install Alloy package
+  package:
+    name: "{{ alloy_package_name }}"
+    state: present
+
+- name: ensure Alloy service is enabled and started
+  ansible.builtin.service:
+    name: "{{ alloy_service_name }}"
+    enabled: true
+    state: restarted
