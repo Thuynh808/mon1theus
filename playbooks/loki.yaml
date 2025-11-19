@@ -1,0 +1,6 @@
+---
+
+- name: install and configure loki
+  hosts: mon1
+  roles:
+    - loki

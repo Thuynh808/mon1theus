@@ -1,0 +1,6 @@
+---
+
+- name: install and configure node_exporter
+  hosts: mon_clients
+  roles:
+    - node_exporter
