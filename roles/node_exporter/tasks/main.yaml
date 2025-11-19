@@ -5,7 +5,6 @@
       - gzip
     state: present
 - name: download and unarchive prometheus
-  run_once: true
   unarchive:
     src: "{{ node_exporter_download_url }}"
     dest: "{{ node_exporter_tmp_dir }}" 
