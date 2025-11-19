@@ -1,0 +1,37 @@
+auth_enabled: false
+
+server:
+  http_listen_port: {{ loki_http_listen_port }}
+
+common:
+  ring:
+    instance_addr: {{ hostvars['mon1']['ansible_host'] }}
+    kvstore:
+      store: inmemory
+  replication_factor: 1
+  path_prefix: {{ loki_data_dir }}
+
+schema_config:
+  configs:
+  - from: {{ loki_schema_from }}
+    store: tsdb
+    object_store: filesystem
+    schema: v13
+    index:
+      prefix: {{ loki_index_prefix }}
+      period: 24h
+
+storage_config:
+  filesystem:
+    directory: {{ loki_data_dir }}/chunks
+
+limits_config:
+  retention_period: {{ loki_retention_period }}
+
+compactor:
+  working_directory: {{ loki_data_dir }}/compactor
+  retention_enabled: true
+
+ruler:
+  alertmanager_url: http://localhost:9093
+

@@ -1,0 +1,51 @@
+---
+- name: add grafana RPM repo
+  yum_repository:
+    name: grafana
+    description: grafana repository
+    baseurl: https://rpm.grafana.com
+    enabled: yes
+    repo_gpgcheck: yes
+    gpgcheck: yes
+    gpgkey:
+      - https://rpm.grafana.com/gpg.key
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+- name: install loki package
+  yum:
+    name: loki
+    state: present
+- name: ensure loki data and config directories exists
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: loki
+    group: loki
+    mode: "0750"
+  loop:
+    - "{{ loki_data_dir }}"
+    - "{{ loki_config_dir }}"
+- name: template config file
+  template:
+    src: loki_config.j2
+    dest: "{{ loki_config_dir }}/config.yml"
+- name: open port in firewalld
+  firewalld:
+    port: "{{ loki_http_listen_port }}/tcp"
+    permanent: true
+    immediate: true
+    state: enabled
+- name: restart firewalld
+  service:
+    name: firewalld
+    state: restarted
+- name: add port to selinux port
+  seport:
+    ports: "{{ loki_http_listen_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+- name: restart loki
+  service:
+    name: loki
+    state: restarted

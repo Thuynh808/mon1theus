@@ -58,8 +58,10 @@ grafana_datasources:
 
 loki_data_dir: /var/lib/loki
 loki_config_dir: /etc/loki
-loki_listen_address: "0.0.0.0:3100"
-loki_retention_period: "7d"
+loki_http_listen_port: "3100"
+loki_retention_period: "168h"
+loki_index_prefix: "index_"
+loki_schema_from: "2020-05-15"
 
 # Alertmanager (mon1)
 
