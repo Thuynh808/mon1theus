@@ -12,7 +12,8 @@ ExecStart={{ prometheus_bin_path | default('/usr/local/bin/prometheus') }} \
   --config.file={{ prometheus_config_dir | default('/etc/prometheus') }}/prometheus.yml \
   --storage.tsdb.path={{ prometheus_data_dir | default('/var/lib/prometheus') }} \
   --web.listen-address={{ prometheus_web_listen_address | default('0.0.0.0:9090') }} \
-  --log.level={{ prometheus_log_level | default('info') }}
+  --log.level={{ prometheus_log_level | default('info') }} \
+  --web.enable-remote-write-receiver
 Restart=on-failure
 RestartSec=5s
 LimitNOFILE=8192
