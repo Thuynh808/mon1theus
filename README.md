@@ -3,7 +3,7 @@
 - **Clone repo**
 
 ```bash
-git clone https://github.com/thuynh808/mon1theus
+git clone -b prometheus-nodeexporter-role https://github.com/thuynh808/mon1theus
 cd mon1theus
 ```
 
