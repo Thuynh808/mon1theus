@@ -1,8 +1,6 @@
 ---
 - name: import grafana GPG key
-  rpm_key:
-    state: present
-    key: "{{ alloy_repo_gpgkey }}"
+  command: "rpm --import {{ alloy_repo_gpgkey }}"
 
 - name: configure grafana yum repository
   yum_repository:
