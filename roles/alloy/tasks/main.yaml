@@ -20,6 +20,11 @@
     name: "{{ alloy_package_name }}"
     state: present
 
+- name: install acl
+  package:
+    name: acl
+    state: present
+
 - name: ensure alloy user exists
   user:
     name: alloy
