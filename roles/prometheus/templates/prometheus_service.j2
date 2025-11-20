@@ -13,8 +13,8 @@ ExecStart={{ prometheus_bin_path | default('/usr/local/bin/prometheus') }} \
   --storage.tsdb.path={{ prometheus_data_dir | default('/var/lib/prometheus') }} \
   --web.listen-address={{ prometheus_web_listen_address | default('0.0.0.0:9090') }} \
   --log.level={{ prometheus_log_level | default('info') }} \
-  --web.enable-remote-write-receiver
-  --storage.tsdb.retention.time=22d
+  --web.enable-remote-write-receiver \
+  --storage.tsdb.retention.time=22d \
   --storage.tsdb.retention.size=22GB
 Restart=on-failure
 RestartSec=5s
