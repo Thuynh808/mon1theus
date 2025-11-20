@@ -55,7 +55,7 @@ local.file_match "system_logs" {
 
 loki.source.file "system_logs" {
   targets    = local.file_match.system_logs.targets
-  forward_to = [loki.write.local.receiver]
+  forward_to = [loki.process.system_logs.receiver]
 }
 
 
@@ -72,10 +72,10 @@ loki.process "system_logs" {
       severity = "unknown",
     }
   }
-
+  forward_to = [loki.write.local.receiver]
+}
 
 loki.source.syslog "cisco_switches" {
-  // Listener for incoming syslog from your switches
   listener {
     address  = "0.0.0.0:514"
     protocol = "udp"
@@ -125,7 +125,6 @@ loki.process "cisco_switches" {
     }
   }
 
-  // Finish by sending logs to Loki
   forward_to = [loki.write.local.receiver]
 }
 
@@ -137,4 +136,3 @@ loki.write "local" {
 }
 
 livedebugging{}
-}
