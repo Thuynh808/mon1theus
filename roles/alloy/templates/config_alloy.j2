@@ -76,7 +76,7 @@ loki.process "system_logs" {
 
 loki.source.syslog "cisco_switches" {
   listener {
-    address  = "0.0.0.0:514"
+    address  = "0.0.0.0:1514"
     protocol = "udp"
 
     labels = {
