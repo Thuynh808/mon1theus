@@ -20,8 +20,13 @@
     name: "{{ alloy_package_name }}"
     state: present
 
+- name: manage Alloy config file
+  template:
+    src: config_alloy.j2
+    dest: "{{ alloy_config_file }}"
+
 - name: ensure Alloy service is enabled and started
-  ansible.builtin.service:
+  service:
     name: "{{ alloy_service_name }}"
     enabled: true
     state: restarted
