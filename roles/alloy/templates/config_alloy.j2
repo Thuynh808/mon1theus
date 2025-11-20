@@ -82,7 +82,7 @@ loki.source.syslog "cisco_switches" {
     protocol = "udp"
 
     labels = {
-      job = "cisco-syslog"
+      job = "cisco-syslog",
     }
   }
 
@@ -92,7 +92,7 @@ loki.source.syslog "cisco_switches" {
 loki.process "cisco_switches" {
   stage.labels {
     values = {
-      remote_ip = "__syslog_connection_ip_address"
+      remote_ip = "__syslog_connection_ip_address",
     }
   }
 
