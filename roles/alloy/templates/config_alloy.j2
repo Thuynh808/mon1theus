@@ -66,11 +66,10 @@ loki.process "system_logs" {
 
   stage.labels {
     values = {
-      host     = "host" 
-      program  = "program" 
-      pid      = "pid"    
-      // For now severity is static; we can later wire in level detection
-      severity = "unknown"
+      host     = "host",
+      program  = "program", 
+      pid      = "pid",   
+      severity = "unknown",
     }
   }
 
@@ -101,8 +100,8 @@ loki.process "cisco_switches" {
     selector = "{remote_ip=\"10.2.22.223\"}"  // csw1 loopback
     stage.static_labels {
       values = {
-        hostname = "csw1"
-        role     = "core"
+        hostname = "csw1",
+        role     = "core",
       }
     }
   }
@@ -111,8 +110,8 @@ loki.process "cisco_switches" {
     selector = "{remote_ip=\"10.2.22.224\"}"  // sw1 loopback
     stage.static_labels {
       values = {
-        hostname = "sw1"
-        role     = "access"
+        hostname = "sw1",
+        role     = "access",
       }
     }
   }
@@ -121,8 +120,8 @@ loki.process "cisco_switches" {
     selector = "{remote_ip=\"10.2.22.225\"}"  // sw2 loopback
     stage.static_labels {
       values = {
-        hostname = "sw2"
-        role     = "access"
+        hostname = "sw2",
+        role     = "access",
       }
     }
   }
