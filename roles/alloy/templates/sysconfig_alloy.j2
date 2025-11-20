@@ -1,0 +1,17 @@
+## Path:
+## Description: Grafana Alloy settings
+## Type:        string
+## Default:     ""
+## ServiceRestart: alloy
+#
+# Command line options for Alloy.
+#
+# The configuration file holding the Alloy config.
+CONFIG_FILE="{{ alloy_config_file }}"
+
+# User-defined arguments to pass to the run command.
+CUSTOM_ARGS="--server.http.listen-addr={{ hostvars[host]['ansible_default_ipv4']['address'] }}:{{ alloy_ui_port }}"
+
+# Restart on system upgrade. Defaults to true.
+RESTART_ON_UPGRADE=true
+

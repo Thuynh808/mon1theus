@@ -20,13 +20,49 @@
     name: "{{ alloy_package_name }}"
     state: present
 
+- name: ensure alloy user exists
+  user:
+    name: alloy
+    system: true
+    shell: /sbin/nologin
+    create_home: false
+
+- name: add alloy user to systemd-journal group
+  user:
+    name: alloy
+    groups:
+      - systemd-journal
+    append: true
+
 - name: manage Alloy config file
   template:
     src: config_alloy.j2
     dest: "{{ alloy_config_file }}"
 
+- name: manage Alloy env file
+  template:
+    src: sysconfig_alloy.j2
+    dest: "{{ alloy_env_file }}"
+
+- name: allow alloy web port in SELinux
+  seport:
+    ports: "{{ alloy_ui_port }}"
+    proto: tcp
+    setype: http_port_t
+    state: present
+
+- name: open alloy web port in firewalld
+  firewalld:
+    port: "{{ alloy_ui_port }}/tcp"
+    permanent: true
+    state: enabled
+    immediate: true
+
 - name: ensure Alloy service is enabled and started
   service:
-    name: "{{ alloy_service_name }}"
+    name: "{{ item }}"
     enabled: true
     state: restarted
+  loop:
+    - alloy
+    - firewalld
