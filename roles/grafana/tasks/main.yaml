@@ -1,0 +1,37 @@
+---
+- name: add grafana RPM repo
+  yum_repository:
+    name: grafana
+    description: grafana repository
+    baseurl: https://rpm.grafana.com
+    enabled: yes
+    repo_gpgcheck: yes
+    gpgcheck: yes
+    gpgkey:
+      - https://rpm.grafana.com/gpg.key
+    sslverify: yes
+    sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+- name: install grafana
+  yum:
+    name: grafana
+    state: present
+- name: start and enable grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: true
+- name: reload systemd manager
+  shell: 'systemctl daemon-reload'
+- name: open port 3000
+  firewalld:
+    port: 3000/tcp
+    permanent: true
+    state: enabled
+    immediate: true
+- name: restart services
+  service:
+    name: "{{ item }}"
+    state: restarted
+  loop:
+    - firewalld
+    - grafana-server

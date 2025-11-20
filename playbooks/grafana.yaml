@@ -1,0 +1,6 @@
+---
+
+- name: install and configure grafana
+  hosts: mon1
+  roles:
+    - grafana

@@ -37,3 +37,8 @@ ansible-playbook playbooks/loki.yaml -vv
 ansible-playbook playbooks/alloy.yaml -vv
 ```
 
+- **Install grafana**
+
+```bash
+ansible-playbook playbooks/grafana.yaml -vv
+```
