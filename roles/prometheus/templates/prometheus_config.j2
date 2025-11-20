@@ -24,10 +24,10 @@ scrape_configs:
 
 # Node Exporter for ALL monitored nodes
 # This block dynamically scrapes all hosts in group ‘mon_clients’
-  - job_name: "node_exporter"
-    static_configs:
-      - targets:
-{% for host in groups['mon_clients'] %}
-          - "{{ hostvars[host]['ansible_host'] }}:{{ node_exporter_port }}"
-{% endfor %}
+#  - job_name: "node_exporter"
+#    static_configs:
+#      - targets:
+#{% for host in groups['mon_clients'] %}
+#          - "{{ hostvars[host]['ansible_host'] }}:{{ node_exporter_port }}"
+#{% endfor %}
 
