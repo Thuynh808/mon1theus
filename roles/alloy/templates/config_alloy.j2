@@ -47,7 +47,7 @@ prometheus.remote_write "local" {
 local.file_match "system_logs" {
   path_targets = [{
     __address__ = "localhost",
-    __path__    = "/var/log/{syslog,messages,secure,*.log}",
+    __path__    = "/var/log/{syslog,messages,secure}",
     instance    = constants.hostname,
     job         = "system-logs",
   }]
@@ -61,12 +61,11 @@ loki.source.file "system_logs" {
 
 loki.process "system_logs" {
   stage.regex {
-    expression = `^(?P<ts>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) (?P<host>\S+) (?P<program>[^[]+)(?:\[(?P<pid>\d+)\])?: (?P<msg>.*)$`
+    expression = `^(?P<ts>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) (?P<program>[^[]+)(?:\[(?P<pid>\d+)\])?: (?P<msg>.*)$`
   }
 
   stage.labels {
     values = {
-      host     = "host",
       program  = "program", 
       pid      = "pid",   
       severity = "unknown",
