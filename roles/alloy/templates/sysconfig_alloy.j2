@@ -10,7 +10,7 @@
 CONFIG_FILE="{{ alloy_config_file }}"
 
 # User-defined arguments to pass to the run command.
-CUSTOM_ARGS="--server.http.listen-addr={{ hostvars[host]['ansible_default_ipv4']['address'] }}:{{ alloy_ui_port }}"
+CUSTOM_ARGS="--server.http.listen-addr={{ ansible_default_ipv4.address }}:{{ alloy_ui_port }}"
 
 # Restart on system upgrade. Defaults to true.
 RESTART_ON_UPGRADE=true
