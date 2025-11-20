@@ -18,3 +18,22 @@ vim inventory
 ```bash
 ./install_req.sh
 ```
+
+- **Install prometheus**
+
+```bash
+ansible-playbook playbooks/prometheus.yaml -vv
+```
+
+- **Install loki**
+
+```bash
+ansible-playbook playbooks/loki.yaml -vv
+```
+
+- **Install alloy**
+
+```bash
+ansible-playbook playbooks/alloy.yaml -vv
+```
+
