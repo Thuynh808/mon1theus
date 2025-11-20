@@ -73,7 +73,6 @@ loki.process "system_logs" {
     }
   }
 
-// Cisco switch syslog -> Loki
 
 loki.source.syslog "cisco_switches" {
   // Listener for incoming syslog from your switches
@@ -97,7 +96,7 @@ loki.process "cisco_switches" {
   }
 
   stage.match {
-    selector = "{remote_ip=\"10.2.22.223\"}"  // csw1 loopback
+    selector = "{remote_ip=\"10.2.22.223\"}"
     stage.static_labels {
       values = {
         hostname = "csw1",
@@ -107,7 +106,7 @@ loki.process "cisco_switches" {
   }
 
   stage.match {
-    selector = "{remote_ip=\"10.2.22.224\"}"  // sw1 loopback
+    selector = "{remote_ip=\"10.2.22.224\"}"
     stage.static_labels {
       values = {
         hostname = "sw1",
@@ -117,7 +116,7 @@ loki.process "cisco_switches" {
   }
 
   stage.match {
-    selector = "{remote_ip=\"10.2.22.225\"}"  // sw2 loopback
+    selector = "{remote_ip=\"10.2.22.225\"}"
     stage.static_labels {
       values = {
         hostname = "sw2",
