@@ -18,6 +18,7 @@ alloy_repo_baseurl: https://rpm.grafana.com
 alloy_repo_gpgkey: https://rpm.grafana.com/gpg.key
 alloy_package_name: alloy
 
+alloy_storage_path: /var/lib/alloy
 alloy_config_file: /etc/alloy/config.alloy
 alloy_env_file: /etc/sysconfig/alloy
 
