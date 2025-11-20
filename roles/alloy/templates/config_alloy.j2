@@ -47,7 +47,7 @@ prometheus.remote_write "local" {
 local.file_match "system_logs" {
   path_targets = [{
     __address__ = "localhost",
-    __path__    = "/var/log/{syslog,messages,secure}",
+    __path__    = "/var/log/{syslog,messages,secure,*.log}",
     instance    = constants.hostname,
     job         = "system-logs",
   }]
@@ -73,6 +73,64 @@ loki.process "system_logs" {
       severity = "unknown"
     }
   }
+
+// Cisco switch syslog -> Loki
+
+loki.source.syslog "cisco_switches" {
+  // Listener for incoming syslog from your switches
+  listener {
+    address  = "0.0.0.0:514"
+    protocol = "udp"
+
+    labels = {
+      job = "cisco-syslog"
+    }
+  }
+
+  forward_to = [loki.process.cisco_switches.receiver]
+}
+
+loki.process "cisco_switches" {
+  stage.labels {
+    values = {
+      remote_ip = "__syslog_connection_ip_address"
+    }
+  }
+
+  stage.match {
+    selector = "{remote_ip=\"10.2.22.223\"}"  // csw1 loopback
+    stage.static_labels {
+      values = {
+        hostname = "csw1"
+        role     = "core"
+      }
+    }
+  }
+
+  stage.match {
+    selector = "{remote_ip=\"10.2.22.224\"}"  // sw1 loopback
+    stage.static_labels {
+      values = {
+        hostname = "sw1"
+        role     = "access"
+      }
+    }
+  }
+
+  stage.match {
+    selector = "{remote_ip=\"10.2.22.225\"}"  // sw2 loopback
+    stage.static_labels {
+      values = {
+        hostname = "sw2"
+        role     = "access"
+      }
+    }
+  }
+
+  // Finish by sending logs to Loki
+  forward_to = [loki.write.local.receiver]
+}
+
 
 loki.write "local" {
     endpoint {

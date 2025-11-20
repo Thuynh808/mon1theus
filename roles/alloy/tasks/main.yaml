@@ -58,6 +58,13 @@
     state: enabled
     immediate: true
 
+- name: open alloy 514/udp for switches syslog in firewalld
+  firewalld:
+    port: 514/udp
+    permanent: true
+    state: enabled
+    immediate: true
+
 - name: give alloy user permissions to view logs
   shell: "setfacl -m u:alloy:r /var/log/messages /var/log/secure"
 
