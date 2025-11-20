@@ -1,5 +1,7 @@
-discovery.relabel "integrations_node_exporter" {
-  targets = prometheus.exporter.unix.integrations_node_exporter.targets
+###### Metrics #######
+
+discovery.relabel "exporter" {
+  targets = prometheus.exporter.unix.exporter.targets
 
   rule {
     target_label = "instance"
@@ -12,7 +14,7 @@ discovery.relabel "integrations_node_exporter" {
   }
 }
 
-prometheus.exporter.unix "integrations_node_exporter" {
+prometheus.exporter.unix "exporter" {
   disable_collectors = ["ipvs", "btrfs", "infiniband", "xfs", "zfs"]
   enable_collectors = ["meminfo"]
 
@@ -29,16 +31,13 @@ prometheus.exporter.unix "integrations_node_exporter" {
   netdev {
     device_exclude = "^(veth.*|cali.*|[a-f0-9]{15})$"
   }
-
-
 }
 
-prometheus.scrape "integrations_node_exporter" {
+prometheus.scrape "exporter" {
 scrape_interval = "15s"
-  targets    = discovery.relabel.integrations_node_exporter.output
+  targets    = discovery.relabel.exporter.output
   forward_to = [prometheus.remote_write.local.receiver]
 }
-
 
 prometheus.remote_write "local" {
   endpoint {
@@ -46,47 +45,19 @@ prometheus.remote_write "local" {
   }
 }
 
-loki.source.journal "logs_integrations_integrations_node_exporter_journal_scrape" {
-  max_age       = "24h0m0s"
-  relabel_rules = discovery.relabel.logs_integrations_integrations_node_exporter_journal_scrape.rules
-  forward_to    = [loki.write.local.receiver]
-}
+###### Logs #######
 
-local.file_match "logs_integrations_integrations_node_exporter_direct_scrape" {
+local.file_match "system_logs" {
   path_targets = [{
     __address__ = "localhost",
     __path__    = "/var/log/{syslog,messages,*.log}",
     instance    = constants.hostname,
-    job         = "integrations/node_exporter",
+    job         = "system-logs",
   }]
 }
 
-discovery.relabel "logs_integrations_integrations_node_exporter_journal_scrape" {
-  targets = []
-
-  rule {
-    source_labels = ["__journal__systemd_unit"]
-    target_label  = "unit"
-  }
-
-  rule {
-    source_labels = ["__journal__boot_id"]
-    target_label  = "boot_id"
-  }
-
-  rule {
-    source_labels = ["__journal__transport"]
-    target_label  = "transport"
-  }
-
-  rule {
-    source_labels = ["__journal_priority_keyword"]
-    target_label  = "level"
-  }
-}
-
-loki.source.file "logs_integrations_integrations_node_exporter_direct_scrape" {
-  targets    = local.file_match.logs_integrations_integrations_node_exporter_direct_scrape.targets
+loki.source.file "system_logs" {
+  targets    = local.file_match.system_logs.targets
   forward_to = [loki.write.local.receiver]
 }
 
