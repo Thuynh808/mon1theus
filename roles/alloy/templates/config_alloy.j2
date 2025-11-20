@@ -47,7 +47,7 @@ prometheus.remote_write "local" {
 local.file_match "system_logs" {
   path_targets = [{
     __address__ = "localhost",
-    __path__    = "/var/log/{syslog,messages,secure}",
+    __path__    = "/var/log/{syslog,messages,secure,cisco-switch.log}",
     instance    = constants.hostname,
     job         = "system-logs",
   }]
