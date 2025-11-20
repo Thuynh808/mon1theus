@@ -58,6 +58,22 @@ loki.source.file "system_logs" {
   forward_to = [loki.write.local.receiver]
 }
 
+
+loki.process "system_logs" {
+  stage.regex {
+    expression = `^(?P<ts>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) (?P<host>\S+) (?P<program>[^[]+)(?:\[(?P<pid>\d+)\])?: (?P<msg>.*)$`
+  }
+
+  stage.labels {
+    values = {
+      host     = "host" 
+      program  = "program" 
+      pid      = "pid"    
+      // For now severity is static; we can later wire in level detection
+      severity = "unknown"
+    }
+  }
+
 loki.write "local" {
     endpoint {
         url ="http://{{ hostvars['mon1']['ansible_host'] }}:3100/loki/api/v1/push"

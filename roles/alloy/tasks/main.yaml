@@ -58,6 +58,9 @@
     state: enabled
     immediate: true
 
+- name: give alloy user permissions to view logs
+  shell: "setfacl -m u:alloy:r /var/log/messages /var/log/secure"
+
 - name: ensure Alloy service is enabled and started
   service:
     name: "{{ item }}"
