@@ -63,9 +63,9 @@
     state: enabled
     immediate: true
 
-- name: open alloy 1514/udp for switches syslog in firewalld
+- name: open alloy 514/udp for switches syslog in firewalld
   firewalld:
-    port: 1514/udp
+    port: 514/udp
     permanent: true
     state: enabled
     immediate: true
