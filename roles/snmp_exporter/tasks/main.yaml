@@ -44,7 +44,7 @@
 - name: scrape config template
   template:
     src: scrape_config.j2
-    dest: "{{ prometheus_config_dir }}"
+    dest: "{{ prometheus_config_dir }}/prometheus.yml"
     owner: "{{ snmp_exporter_user }}"
     group: "{{ snmp_exporter_group }}"
     mode: '0644'
