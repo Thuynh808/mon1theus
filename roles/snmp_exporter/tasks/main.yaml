@@ -28,6 +28,19 @@
     group: "{{ snmp_exporter_group }}"
     mode: '0755'
     remote_src: true
+- name: create snmp directory
+  file:
+    path: "{{ snmp_exporter_config_dir }}"
+    state: directory
+    owner: "{{ snmp_exporter_user }}"
+    group: "{{ snmp_exporter_group }}"
+- name: deploy snmp config
+  template:
+    src: snmp_config.j2
+    dest: "{{ snmp_exporter_config_dir }}/snmp.yml"
+    owner: "{{ snmp_exporter_user }}"
+    group: "{{ snmp_exporter_group }}"
+    mode: '0644'
 - name: scrape config template
   template:
     src: scrape_config.j2
