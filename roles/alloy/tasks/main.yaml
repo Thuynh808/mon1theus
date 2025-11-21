@@ -55,6 +55,7 @@
     proto: tcp
     setype: http_port_t
     state: present
+  when: inventory_hostname in groups['mon_core']
 
 - name: open alloy web port in firewalld
   firewalld:
@@ -62,6 +63,7 @@
     permanent: true
     state: enabled
     immediate: true
+  when: inventory_hostname in groups['mon_core']
 
 - name: open alloy 514/udp for switches syslog in firewalld
   firewalld:
@@ -69,6 +71,7 @@
     permanent: true
     state: enabled
     immediate: true
+  when: inventory_hostname in groups['mon_core']
 
 - name: give alloy user permissions to view logs
   shell: "setfacl -m u:alloy:r /var/log/messages /var/log/secure /var/log/cisco-*.log"
@@ -77,6 +80,7 @@
   template:
     src: rsyslog_cisco.j2
     dest: '/etc/rsyslog.d/30-cisco.conf'
+  when: inventory_hostname in groups['mon_core']
 
 - name: ensure Alloy service is enabled and started
   service:
