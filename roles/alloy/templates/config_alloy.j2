@@ -69,7 +69,7 @@ local.file_match "cisco_switches" {
   }]
 }
 loki.source.file "cisco_switches" {
-  targets    = loki.file_match.cisco_switches.targets
+  targets    = local.file_match.cisco_switches.targets
   forward_to = [loki.write.local.receiver]
 }
 
