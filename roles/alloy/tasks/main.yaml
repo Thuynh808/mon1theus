@@ -68,10 +68,17 @@
     src: config_alloy.j2
     dest: "{{ alloy_config_file }}"
 
-- name: manage Alloy env file
+- name: manage Alloy env file (redhat)
   template:
     src: sysconfig_alloy.j2
     dest: "{{ alloy_env_file }}"
+  when: ansible_os_family == "RedHat"
+
+- name: manage Alloy env file (debian)
+  template:
+    src: sysconfig_alloy.j2
+    dest: "/etc/default/alloy"
+  when: ansible_os_family == "Debian"
 
 - name: allow alloy web port in SELinux
   seport:
