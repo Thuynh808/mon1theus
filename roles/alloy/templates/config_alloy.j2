@@ -45,6 +45,45 @@ prometheus.remote_write "local" {
 
 
 
+{% if ansible_os_family == 'Debian' %}
+
+loki.source.journal "system_journal" {
+  max_age = "24h0m0s"
+  labels = {
+    instance = constants.hostname
+    job      = "system-journal"
+  }
+
+  relabel_rules = discovery.relabel.system_journal.rules
+  forward_to = [loki.write.local.receiver]
+}
+
+discovery.relabel "system_journal" {
+  targets = []
+
+  rule {
+    source_labels = ["__journal__systemd_unit"]
+    target_label  = "unit"
+  }
+
+  rule {
+    source_labels = ["__journal__boot_id"]
+    target_label  = "boot_id"
+  }
+
+  rule {
+    source_labels = ["__journal__transport"]
+    target_label  = "transport"
+  }
+
+  rule {
+    source_labels = ["__journal_priority_keyword"]
+    target_label  = "level"
+  }
+}
+
+{% else %}
+
 local.file_match "system_logs" {
   path_targets = [{
     __address__ = "localhost",
@@ -58,7 +97,9 @@ loki.source.file "system_logs" {
   forward_to = [loki.write.local.receiver]
 }
 
+{% endif %}
 
+{% if inventory_hostname in groups['mon_core'] %}
 
 local.file_match "cisco_switches" {
   path_targets = [{
@@ -73,7 +114,7 @@ loki.source.file "cisco_switches" {
   forward_to = [loki.write.local.receiver]
 }
 
-
+{% endif %}
 
 loki.write "local" {
     endpoint {
