@@ -1,6 +1,7 @@
 ---
 - name: import grafana GPG key
   command: "rpm --import {{ alloy_repo_gpgkey }}"
+  when: ansible_os_family == "RedHat"
 
 - name: configure grafana yum repository
   yum_repository:
@@ -14,6 +15,15 @@
     sslverify: true
     sslcacert: /etc/pki/tls/certs/ca-bundle.crt
     state: present
+  when: ansible_os_family == "RedHat"
+
+- name: setup grafana repo for debian
+  shell:
+    - "sudo mkdir -p /etc/apt/keyrings/"
+    - "wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null"
+    - " echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list"
+    - "sudo apt-get update"
+  when: ansible_os_family == "Debian"
 
 - name: install Alloy package
   package:
@@ -24,6 +34,7 @@
   package:
     name: acl
     state: present
+  when: ansible_os_family == "RedHat"
 
 - name: ensure alloy user exists
   user:
@@ -81,6 +92,13 @@
   
 - name: give alloy user permissions to view logs
   shell: "setfacl -m u:alloy:r /var/log/*"
+  when: ansible_os_family == "RedHat"
+
+- name: ensure Alloy service is enabled and started
+  service:
+    name: alloy
+    enabled: true
+    state: started
 
 - name: ensure Alloy service is enabled and started
   service:
@@ -91,3 +109,4 @@
     - alloy
     - firewalld
     - rsyslog
+  when: ansible_os_family == "RedHat"
