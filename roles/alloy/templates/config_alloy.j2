@@ -53,7 +53,6 @@ local.file_match "system_logs" {
     job         = "system-logs",
   }]
 }
-
 loki.source.file "system_logs" {
   targets    = local.file_match.system_logs.targets
   forward_to = [loki.write.local.receiver]
@@ -63,25 +62,14 @@ loki.source.file "system_logs" {
 
 local.file_match "cisco_switches" {
   path_targets = [{
-    __address__ = "localhost"
-    __path__    = "/var/log/cisco-*.log"
-    instance    = constants.hostname
-    job         = "cisco-syslog"
+    __address__ = "localhost",
+    __path__    = "/var/log/cisco-*.log",
+    instance    = constants.hostname,
+    job         = "cisco-syslog",
   }]
 }
-
-loki.relabel "cisco_switch_labels" {
-  targets = local.file_match.cisco_switches.targets
-  rule {
-    source_labels = ["__path__"]
-    regex         = ".*/cisco-(.*).log"
-    replacement   = "$1"
-    target_label  = "switch"
-  }
-}
-
 loki.source.file "cisco_switches" {
-  targets    = loki.relabel.cisco_switch_labels.targets
+  targets    = loki.file_match.cisco_switches.targets
   forward_to = [loki.write.local.receiver]
 }
 
