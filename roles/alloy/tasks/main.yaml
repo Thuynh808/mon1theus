@@ -71,7 +71,12 @@
     immediate: true
 
 - name: give alloy user permissions to view logs
-  shell: "setfacl -m u:alloy:r /var/log/messages /var/log/secure /var/log/*"
+  shell: "setfacl -m u:alloy:r /var/log/messages /var/log/secure /var/log/cisco-*.log"
+
+- name: setup rsyslog for switch logs
+  template:
+    src: rsyslog_cisco.j2
+    dest: '/etc/rsyslog.d/30-cisco.conf'
 
 - name: ensure Alloy service is enabled and started
   service:
