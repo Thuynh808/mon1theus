@@ -2,20 +2,36 @@
 module(load="imudp")
 input(type="imudp" port="514")
 
+# Always show sender IP, not whatever hostname is in the packet
+template(name="CiscoIPFormat" type="string"
+         string="%timegenerated% %fromhost-ip% %msg%\n")
 
-if ($fromhost-ip == '{{ csw1_loopback }}') then {
-  /var/log/cisco-csw1.log
+# CSW1
+if ($fromhost-ip == '10.2.22.223') then {
+  action(
+    type="omfile"
+    file="/var/log/cisco-csw1.log"
+    template="CiscoIPFormat"
+  )
   stop
 }
 
-
-if ($fromhost-ip == '{{ sw1_loopback }}') then {
-  /var/log/cisco-sw1.log
+# SW1
+if ($fromhost-ip == '10.2.22.224') then {
+  action(
+    type="omfile"
+    file="/var/log/cisco-sw1.log"
+    template="CiscoIPFormat"
+  )
   stop
 }
 
-
-if ($fromhost-ip == '{{ sw2_loopback }}') then {
-  /var/log/cisco-sw2.log
+# SW2
+if ($fromhost-ip == '10.2.22.225') then {
+  action(
+    type="omfile"
+    file="/var/log/cisco-sw2.log"
+    template="CiscoIPFormat"
+  )
   stop
 }
