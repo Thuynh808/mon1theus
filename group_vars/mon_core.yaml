@@ -77,7 +77,7 @@ snmp_exporter_tmp_dir: "/tmp"
 snmp_exporter_download_url: "https://github.com/prometheus/snmp_exporter/releases/download/v{{ snmp_exporter_version }}/snmp_exporter-{{ snmp_exporter_version }}.{{ snmp_exporter_arch }}.tar.gz"
 
 snmp_exporter_user: "{{ prometheus_user }}"
-snmp_exporter_group: "{{ prometheu_group }}"
+snmp_exporter_group: "{{ prometheus_group }}"
 
 snmp_exporter_bin_dir: /usr/local/bin
 
