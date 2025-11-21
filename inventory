@@ -7,5 +7,4 @@ localhost ansible_host=10.2.22.7 ansible_fqdn=ans1.lab.streetrack.org ansible_ho
 mon1 ansible_host=10.2.22.5
 
 [mon_clients]
-mon1 ansible_host=10.2.22.5
 node1 ansible_host=10.2.22.6

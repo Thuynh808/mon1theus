@@ -1,6 +1,8 @@
 ---
 
 - name: install and configure alloy
-  hosts: mon_clients
+  hosts:
+    - mon_core
+    - mon_clients
   roles:
     - alloy
