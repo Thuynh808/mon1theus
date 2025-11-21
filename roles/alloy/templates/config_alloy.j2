@@ -44,10 +44,11 @@ prometheus.remote_write "local" {
 }
 
 
+
 local.file_match "system_logs" {
   path_targets = [{
     __address__ = "localhost",
-    __path__    = "/var/log/{syslog,messages,secure,cisco-switch.log}",
+    __path__    = "/var/log/{syslog,messages,secure}",
     instance    = constants.hostname,
     job         = "system-logs",
   }]
@@ -55,77 +56,35 @@ local.file_match "system_logs" {
 
 loki.source.file "system_logs" {
   targets    = local.file_match.system_logs.targets
-  forward_to = [loki.process.system_logs.receiver]
-}
-
-
-loki.process "system_logs" {
-  stage.regex {
-    expression = `^(?P<ts>\w{3}\s+\d+\s+\d{2}:\d{2}:\d{2}) (?P<program>[^[]+)(?:\[(?P<pid>\d+)\])?: (?P<msg>.*)$`
-  }
-
-  stage.labels {
-    values = {
-      program  = "program", 
-      pid      = "pid",   
-      severity = "unknown",
-    }
-  }
   forward_to = [loki.write.local.receiver]
 }
 
-loki.source.syslog "cisco_switches" {
-  listener {
-    address  = "0.0.0.0:1514"
-    protocol = "udp"
 
-    labels = {
-      job = "cisco-syslog",
-    }
-  }
 
-  forward_to = [loki.process.cisco_switches.receiver]
+local.file_match "cisco_switches" {
+  path_targets = [{
+    __address__ = "localhost"
+    __path__    = "/var/log/cisco-*.log"
+    instance    = constants.hostname
+    job         = "cisco-syslog"
+  }]
 }
 
-loki.process "cisco_switches" {
-  stage.labels {
-    values = {
-      remote_ip = "__syslog_connection_ip_address",
-    }
+loki.relabel "cisco_switch_labels" {
+  targets = local.file_match.cisco_switches.targets
+  rule {
+    source_labels = ["__path__"]
+    regex         = ".*/cisco-(.*).log"
+    replacement   = "$1"
+    target_label  = "switch"
   }
+}
 
-  stage.match {
-    selector = "{remote_ip=\"10.2.22.223\"}"
-    stage.static_labels {
-      values = {
-        hostname = "csw1",
-        role     = "core",
-      }
-    }
-  }
-
-  stage.match {
-    selector = "{remote_ip=\"10.2.22.224\"}"
-    stage.static_labels {
-      values = {
-        hostname = "sw1",
-        role     = "access",
-      }
-    }
-  }
-
-  stage.match {
-    selector = "{remote_ip=\"10.2.22.225\"}"
-    stage.static_labels {
-      values = {
-        hostname = "sw2",
-        role     = "access",
-      }
-    }
-  }
-
+loki.source.file "cisco_switches" {
+  targets    = loki.relabel.cisco_switch_labels.targets
   forward_to = [loki.write.local.receiver]
 }
+
 
 
 loki.write "local" {
