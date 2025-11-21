@@ -72,6 +72,7 @@
     - /var/log/cisco-csw1.log
     - /var/log/cisco-sw1.log
     - /var/log/cisco-sw2.log
+  when: inventory_hostname in groups['mon_core']
 
 - name: manage Alloy config file
   template:
