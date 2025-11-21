@@ -48,8 +48,6 @@ alertmanager_receivers:
   - name: "null-receiver"
     email_configs: []
 
-# Default routing for alerts; tweak later as you define real alert rules
-
 alertmanager_default_route:
   group_by: ['alertname', 'instance']
   group_wait: "30s"
@@ -70,3 +68,17 @@ alloy_env_file: /etc/sysconfig/alloy
 
 alloy_enable_ui: true
 alloy_ui_port: 12345
+
+# SNMP exporter
+
+snmp_exporter_version: "0.29.0"
+snmp_exporter_arch: "linux-amd64"
+snmp_exporter_tmp_dir: "/tmp"
+snmp_exporter_download_url: "https://github.com/prometheus/snmp_exporter/releases/download/v{{ node_exporter_version }}/snmp_exporter-{{ node_exporter_version }}.{{ node_exporter_arch }}.tar.gz"
+
+snmp_exporter_user: snmp_exporter
+snmp_exporter_group: snmp_exporter
+
+snmp_exporter_bin_dir: /usr/local/bin
+
+
