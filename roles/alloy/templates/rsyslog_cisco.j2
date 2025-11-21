@@ -1,0 +1,21 @@
+# Listen for Cisco syslog on UDP 514
+module(load="imudp")
+input(type="imudp" port="514")
+
+
+if ($fromhost-ip == '{{ csw1_loopback }}') then {
+  /var/log/cisco-csw1.log
+  stop
+}
+
+
+if ($fromhost-ip == '{{ sw1_loopback }}') then {
+  /var/log/cisco-sw2.log
+  stop
+}
+
+
+if ($fromhost-ip == '{{ sw2_loopback }}') then {
+  /var/log/cisco-sw3.log
+  stop
+}

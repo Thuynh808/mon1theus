@@ -1,4 +1,10 @@
 ---
+# Switch loopbacks
+
+csw1_loopback: "10.2.22.223"
+sw1_loopback: "10.2.22.224"
+sw2_loopback: "10.2.22.225"
+
 # Prometheus (mon1)
 
 prometheus_version: "3.7.3"
