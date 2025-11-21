@@ -4,5 +4,8 @@
   hosts:
     - mon_core
     - mon_clients
+  vars_files:
+    - group_vars/mon_core.yaml
+    - group_vars/mon_clients.yaml
   roles:
     - alloy
