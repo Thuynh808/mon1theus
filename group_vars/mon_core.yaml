@@ -80,5 +80,9 @@ snmp_exporter_user: "{{ prometheus_user }}"
 snmp_exporter_group: "{{ prometheus_group }}"
 
 snmp_exporter_bin_dir: /usr/local/bin
+snmp_exporter_config_dir: /etc/snmp_exporter
+snmp_auth_name: "streetrack_v2"
+snmp_community: "STREETRACK"
+
 
 
