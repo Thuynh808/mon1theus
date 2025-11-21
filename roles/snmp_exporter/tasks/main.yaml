@@ -35,15 +35,15 @@
     owner: root
     group: root
     mode: '0644'
-- name: selinux port open 9100 with http_port_t type
+- name: selinux port open 9116 with http_port_t type
   seport:
-    ports: 9100
+    ports: 9116
     proto: tcp
     setype: http_port_t
     state: present
-- name: open port 9100 in firewalld
+- name: open port 9116 in firewalld
   firewalld:
-    port: 9100/tcp
+    port: 9116/tcp
     permanent: true
     state: enabled
 - name: restart firewalld
