@@ -72,8 +72,11 @@
     state: restarted
 - name: reload systemd
   shell: 'systemctl daemon-reload'
-- name: start and enable node-exporter
+- name: start and enable exporter
   service:
-    name: snmp_exporter
+    name: "{{ item }}"
     state: restarted
     enabled: true
+  loop:
+    - snmp_exporter
+    - prometheus
