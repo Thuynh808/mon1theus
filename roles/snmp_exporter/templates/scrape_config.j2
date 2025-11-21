@@ -1,0 +1,42 @@
+# my global config
+global:
+  scrape_interval: {{ prometheus_scrape_interval }}
+  evaluation_interval: {{ prometheus_evaluation_interval }}
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - "{{ inventory_hostname }}:9093"
+
+# Load rule files
+rule_files:
+  - "rules.yml"
+
+scrape_configs:
+
+# Prometheus itself
+  - job_name: "prometheus"
+    static_configs:
+      - targets:
+          - "localhost:9090"
+
+  - job_name: "snmp_cisco"
+    static_configs:
+      - targets:
+          - "{{ csw1_loopback }}"
+          - "{{ sw1_loopback }}"
+          - "{{ sw2_loopback }}"
+    metrics_path: /snmp
+    params:
+      auth: [streetrack_v2]
+      module: [if_mib]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "127.0.0.1:9116"
+
