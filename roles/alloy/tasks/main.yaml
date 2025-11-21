@@ -73,14 +73,14 @@
     immediate: true
   when: inventory_hostname in groups['mon_core']
 
-- name: give alloy user permissions to view logs
-  shell: "setfacl -m u:alloy:r /var/log/messages /var/log/secure /var/log/cisco-*.log"
-
 - name: setup rsyslog for switch logs
   template:
     src: rsyslog_cisco.j2
     dest: '/etc/rsyslog.d/30-cisco.conf'
   when: inventory_hostname in groups['mon_core']
+  
+- name: give alloy user permissions to view logs
+  shell: "setfacl -m u:alloy:r /var/log/*"
 
 - name: ensure Alloy service is enabled and started
   service:
