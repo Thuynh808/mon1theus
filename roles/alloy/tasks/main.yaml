@@ -17,12 +17,25 @@
     state: present
   when: ansible_os_family == "RedHat"
 
-- name: setup grafana repo for debian
-  shell:
-    - "sudo mkdir -p /etc/apt/keyrings/"
-    - "wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor | sudo tee /etc/apt/keyrings/grafana.gpg > /dev/null"
-    - " echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main" | sudo tee /etc/apt/sources.list.d/grafana.list"
-    - "sudo apt-get update"
+- name: Ensure grafana keyring directory exists
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"
+  when: ansible_os_family == "Debian"
+
+- name: Download Grafana GPG key and store as keyring
+  shell: |
+    wget -q -O - https://apt.grafana.com/gpg.key | gpg --dearmor -o /etc/apt/keyrings/grafana.gpg
+  args:
+    creates: /etc/apt/keyrings/grafana.gpg
+  when: ansible_os_family == "Debian"
+
+- name: Configure Grafana apt repository
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://apt.grafana.com stable main"
+    filename: grafana
+    state: present
   when: ansible_os_family == "Debian"
 
 - name: install Alloy package
