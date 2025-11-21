@@ -25,6 +25,12 @@ vim inventory
 ansible-playbook playbooks/prometheus.yaml -vv
 ```
 
+- **Install snmp_exporter**
+
+```bash
+ansible-playbook playbooks/snmp_exporter.yaml -vv
+```
+
 - **Install loki**
 
 ```bash

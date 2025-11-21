@@ -1,0 +1,6 @@
+---
+
+- name: install and configure snmp_exporter
+  hosts: mon_core
+  roles:
+    - snmp_exporter
