@@ -10,12 +10,12 @@ if ($fromhost-ip == '{{ csw1_loopback }}') then {
 
 
 if ($fromhost-ip == '{{ sw1_loopback }}') then {
-  /var/log/cisco-sw2.log
+  /var/log/cisco-sw1.log
   stop
 }
 
 
 if ($fromhost-ip == '{{ sw2_loopback }}') then {
-  /var/log/cisco-sw3.log
+  /var/log/cisco-sw2.log
   stop
 }
