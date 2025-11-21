@@ -50,8 +50,8 @@ prometheus.remote_write "local" {
 loki.source.journal "system_journal" {
   max_age = "24h0m0s"
   labels = {
-    instance = constants.hostname
-    job      = "system-journal"
+    instance = constants.hostname,
+    job      = "system-journal",
   }
 
   relabel_rules = discovery.relabel.system_journal.rules
