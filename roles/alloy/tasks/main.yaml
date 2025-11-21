@@ -63,6 +63,16 @@
       - systemd-journal
     append: true
 
+- name: create switch log files
+  file:
+    path: "{{ item }}"
+    state: touch
+    mode: '0640'
+  loop:
+    - /var/log/cisco-csw1.log
+    - /var/log/cisco-sw1.log
+    - /var/log/cisco-sw2.log
+
 - name: manage Alloy config file
   template:
     src: config_alloy.j2
