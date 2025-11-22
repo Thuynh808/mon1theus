@@ -97,7 +97,7 @@
     proto: tcp
     setype: http_port_t
     state: present
-  when: inventory_hostname in groups['mon_core']
+  when: ansible_os_family == "RedHat"
 
 - name: open alloy web port in firewalld
   firewalld:
@@ -105,7 +105,7 @@
     permanent: true
     state: enabled
     immediate: true
-  when: inventory_hostname in groups['mon_core']
+  when: ansible_os_family == "RedHat"
 
 - name: open alloy 514/udp for switches syslog in firewalld
   firewalld:
