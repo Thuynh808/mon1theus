@@ -40,3 +40,15 @@ scrape_configs:
       - target_label: __address__
         replacement: "127.0.0.1:9116"
 
+      - source_labels: [instance]
+        regex: "{{ csw1_loopback }}"
+        target_label: instance
+      	replacement: "{{ csw1 }}"
+      - source_labels: [instance]
+        regex: "{{ sw1_loopback }}"
+        target_label: instance
+        replacement: "{{ sw1 }}"
+      - source_labels: [instance]
+        regex: "{{ sw2_loopback }}"
+        target_label: instance
+        replacement: "{{ sw2 }}"
