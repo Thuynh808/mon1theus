@@ -43,7 +43,7 @@ scrape_configs:
       - source_labels: [instance]
         regex: "{{ csw1_loopback }}"
         target_label: instance
-      	replacement: "{{ csw1 }}"
+        replacement: "{{ csw1 }}"
       - source_labels: [instance]
         regex: "{{ sw1_loopback }}"
         target_label: instance
