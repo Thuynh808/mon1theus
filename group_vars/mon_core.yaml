@@ -11,6 +11,7 @@ sw2: "sw2"
 # opnsense scraping ip
 
 fw1_loopback: "10.2.22.222"
+fw1: "fw1"
 
 # Prometheus (mon1)
 
