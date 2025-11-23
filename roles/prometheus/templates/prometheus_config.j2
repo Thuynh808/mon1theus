@@ -26,3 +26,8 @@ scrape_configs:
     static_configs:
       - targets:
           - "{{ fw1_loopback }}:9100"
+    relabel_configs:
+      - source_labels: [__address__]
+        regex: "{{ fw1_loopback }}:9100"
+        target_label: instance
+        replacement: "{{ fw1 }}"
