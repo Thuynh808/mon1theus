@@ -28,3 +28,4 @@ alloy_ui_port: 12345
 # OPNsense 
 
 fw1_loopback: "10.2.22.222"
+fw1: "fw1"
