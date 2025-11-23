@@ -8,7 +8,7 @@ discovery.relabel "exporter" {
 
   rule {
     target_label = "job"
-    replacement = "integrations/node_exporter"
+    replacement = "metrics"
   }
 }
 
@@ -51,7 +51,7 @@ loki.source.journal "system_journal" {
   max_age = "24h0m0s"
   labels = {
     instance = constants.hostname,
-    job      = "system-journal",
+    job      = "system-logs",
   }
 
   relabel_rules = discovery.relabel.system_journal.rules
