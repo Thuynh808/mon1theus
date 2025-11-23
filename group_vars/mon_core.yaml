@@ -8,6 +8,10 @@ csw1: "csw1"
 sw1: "sw1"
 sw2: "sw2"
 
+# opnsense scraping ip
+
+fw1_loopback: "10.2.22.222"
+
 # Prometheus (mon1)
 
 prometheus_version: "3.7.3"

@@ -25,3 +25,6 @@ alloy_env_file: /etc/sysconfig/alloy
 alloy_enable_ui: true
 alloy_ui_port: 12345
 
+# OPNsense 
+
+fw1_loopback: "10.2.22.222"
