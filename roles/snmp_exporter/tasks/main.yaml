@@ -3,6 +3,7 @@
     name:
       - tar
       - gzip
+      - net-snmp-utils
     state: present
 - name: download and unarchive prometheus
   unarchive:
