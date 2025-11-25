@@ -32,7 +32,7 @@ scrape_configs:
         target_label: instance
         replacement: "{{ fw1 }}"
 
-  - job_name: "snmp_cisco"
+  - job_name: "snmp_cisco_if"
     static_configs:
       - targets:
           - "{{ csw1_loopback }}"
@@ -63,7 +63,7 @@ scrape_configs:
         target_label: instance
         replacement: "{{ sw2 }}"
 
-  - job_name: "snmp_cisco"
+  - job_name: "snmp_cisco_device"
     static_configs:
       - targets:
           - "{{ csw1_loopback }}"
