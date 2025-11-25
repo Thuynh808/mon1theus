@@ -1,4 +1,4 @@
-- name: ensure dependencies for unarchive
+- name: ensure snmp dependencies and unarchive
   package:
     name:
       - tar
