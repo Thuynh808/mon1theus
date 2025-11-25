@@ -62,3 +62,34 @@ scrape_configs:
         regex: "{{ sw2_loopback }}"
         target_label: instance
         replacement: "{{ sw2 }}"
+
+  - job_name: "snmp_cisco"
+    static_configs:
+      - targets:
+          - "{{ csw1_loopback }}"
+          - "{{ sw1_loopback }}"
+          - "{{ sw2_loopback }}"
+    metrics_path: /snmp
+    params:
+      auth: [streetrack_v2]
+      module: [cisco_device]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: "127.0.0.1:9116"
+
+      - source_labels: [instance]
+        regex: "{{ csw1_loopback }}"
+        target_label: instance
+        replacement: "{{ csw1 }}"
+      - source_labels: [instance]
+        regex: "{{ sw1_loopback }}"
+        target_label: instance
+        replacement: "{{ sw1 }}"
+      - source_labels: [instance]
+        regex: "{{ sw2_loopback }}"
+        target_label: instance
+        replacement: "{{ sw2 }}"
