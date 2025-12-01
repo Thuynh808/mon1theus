@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 0,
   "links": [],
   "panels": [
     {
@@ -509,7 +509,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "semi-dark-blue",
+                "color": "dark-blue",
                 "value": 0
               }
             ]
@@ -1085,7 +1085,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 120
+                "value": 144
               }
             ]
           },
@@ -1097,7 +1097,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 125
+                "value": 146
               }
             ]
           },
@@ -1121,7 +1121,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 132
+                "value": 154
               }
             ]
           },
@@ -1133,7 +1133,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 115
+                "value": 150
               }
             ]
           },
@@ -1145,7 +1145,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 102
+                "value": 135
               }
             ]
           },
@@ -1173,7 +1173,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 94
+                "value": 134
               }
             ]
           },
@@ -1185,7 +1185,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 104
+                "value": 133
               }
             ]
           },
@@ -1253,6 +1253,10 @@
               {
                 "id": "custom.width",
                 "value": 212
+              },
+              {
+                "id": "custom.hideFrom.viz",
+                "value": true
               }
             ]
           }
@@ -1283,7 +1287,7 @@
             "uid": "af4rmlcvozz0gb"
           },
           "editorMode": "code",
-          "expr": "irate(\r\n  ifHCOutOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback[0-9]*$|^Vlan[0-9]*$\"\r\n  }[5m]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
+          "expr": "irate(\r\n  ifHCOutOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback[0-9]*$|^Vlan[0-9]*$\",ifName!=\"Gi0/5\"\r\n  }[5m]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1296,7 +1300,7 @@
             "uid": "af4rmlcvozz0gb"
           },
           "editorMode": "code",
-          "expr": "irate(\r\n  ifHCInOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback[0-9]*$|^Vlan[0-9]*$\"\r\n  }[5m]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
+          "expr": "irate(\r\n  ifHCInOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback[0-9]*$|^Vlan[0-9]*$\",ifName!=\"Gi0/5\"\r\n  }[5m]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1309,7 +1313,7 @@
             "uid": "af4rmlcvozz0gb"
           },
           "editorMode": "code",
-          "expr": "ifHighSpeed{\r\n  job=\"snmp_cisco_if\",\r\n  ifDescr!~\"^Loopback.*|^Vlan.*|^Null.*\"\r\n}\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1\r\n",
+          "expr": "ifHighSpeed{\r\n  job=\"snmp_cisco_if\",\r\n  ifDescr!~\"^Loopback.*|^Vlan.*|^Null.*\",ifName!=\"Gi0/5\"\r\n}\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1\r\n",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1322,7 +1326,7 @@
             "uid": "af4rmlcvozz0gb"
           },
           "editorMode": "code",
-          "expr": "increase(\r\n  ifHCInOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback.*|^Vlan.*\"\r\n  }[$__range]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
+          "expr": "increase(\r\n  ifHCInOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback.*|^Vlan.*\",ifName!=\"Gi0/5\"\r\n  }[$__range]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1335,7 +1339,7 @@
             "uid": "af4rmlcvozz0gb"
           },
           "editorMode": "code",
-          "expr": "increase(\r\n  ifHCOutOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback.*|^Vlan.*\"\r\n  }[$__range]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
+          "expr": "increase(\r\n  ifHCOutOctets{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Loopback.*|^Vlan.*\",ifName!=\"Gi0/5\"\r\n  }[$__range]\r\n)\r\nand on (instance, ifIndex)\r\nifAdminStatus{job=\"snmp_cisco_if\"} == 1",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -1427,8 +1431,9 @@
           "editorMode": "code",
           "errors": {},
           "exemplar": false,
-          "expr": "count(\r\n  ifOperStatus{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"\r\n  } != 1\r\nand\r\n  ifAdminStatus{job=\"snmp_cisco_if\"} == 1\r\n)\r\n",
+          "expr": "count(\r\n  ifOperStatus{\r\n    job=\"snmp_cisco_if\",\r\n    ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*|\"\r\n  } != 1\r\nand\r\n  ifAdminStatus{job=\"snmp_cisco_if\"} == 1\r\n)\r\n",
           "format": "time_series",
+          "hide": true,
           "instant": true,
           "interval": "5m",
           "intervalFactor": 1,
@@ -1437,6 +1442,29 @@
           "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_time%7Balias%3D%5C%22%24host%5C%22%7D%20-%20node_boot_time%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A25%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D",
           "range": false,
           "refId": "A",
+          "step": 300
+        },
+        {
+          "calculatedInterval": "10m",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "af4rmlcvozz0gb"
+          },
+          "datasourceErrors": {},
+          "editorMode": "code",
+          "errors": {},
+          "exemplar": false,
+          "expr": "count(\r\n  (\r\n    ifOperStatus{\r\n      job=\"snmp_cisco_if\",\r\n      ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\",\r\n      ifName!=\"Gi0/5\"\r\n    } != 1\r\n  )\r\nand\r\n  (\r\n    ifAdminStatus{\r\n      job=\"snmp_cisco_if\",\r\n      ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\",\r\n      ifName!=\"Gi0/5\"\r\n    } == 1\r\n  )\r\n)",
+          "format": "time_series",
+          "hide": false,
+          "instant": true,
+          "interval": "5m",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "metric": "",
+          "prometheusLink": "/api/datasources/proxy/1/graph#%5B%7B%22expr%22%3A%22node_time%7Balias%3D%5C%22%24host%5C%22%7D%20-%20node_boot_time%7Balias%3D%5C%22%24host%5C%22%7D%22%2C%22range_input%22%3A%2243200s%22%2C%22end_input%22%3A%222015-9-18%2013%3A25%22%2C%22step_input%22%3A%22%22%2C%22tab%22%3A0%7D%5D",
+          "range": false,
+          "refId": "B",
           "step": 300
         }
       ],
@@ -1703,7 +1731,7 @@
           "editorMode": "code",
           "errors": {},
           "exemplar": false,
-          "expr": "sum(\r\n  increase(ifInErrors{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[5m]) +\r\n  increase(ifOutErrors{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[5m]) +\r\n  increase(ifInDiscards{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[5m]) +\r\n  increase(ifOutDiscards{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[5m])\r\n)",
+          "expr": "sum(\r\n  increase(ifInErrors{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[1m]) +\r\n  increase(ifOutErrors{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[1m]) +\r\n  increase(ifInDiscards{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[1m]) +\r\n  increase(ifOutDiscards{job=\"snmp_cisco_if\", ifDescr!~\"^Vlan.*|^Loopback.*|^Null.*\"}[1m])\r\n)",
           "format": "time_series",
           "instant": true,
           "interval": "5m",
@@ -1787,7 +1815,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 15,
         "w": 8,
         "x": 0,
         "y": 10
@@ -1819,6 +1847,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "1h",
       "title": "CSW1 - Logs",
       "transformations": [
         {
@@ -1889,7 +1918,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 15,
         "w": 8,
         "x": 8,
         "y": 10
@@ -1922,6 +1951,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "1h",
       "title": "SW1 - Logs",
       "transformations": [
         {
@@ -1992,7 +2022,7 @@
         ]
       },
       "gridPos": {
-        "h": 13,
+        "h": 15,
         "w": 8,
         "x": 16,
         "y": 10
@@ -2016,7 +2046,7 @@
             "uid": "ff4rmomltpzb4d"
           },
           "direction": "backward",
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "{job=\"cisco-syslog\", filename=\"/var/log/cisco-sw2.log\"}",
           "hide": false,
           "legendFormat": "",
@@ -2024,6 +2054,7 @@
           "refId": "A"
         }
       ],
+      "timeFrom": "1h",
       "title": "SW2 - Logs",
       "transformations": [
         {
@@ -2045,7 +2076,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 23
+        "y": 25
       },
       "id": 21,
       "panels": [
@@ -2162,7 +2193,7 @@
             "h": 10,
             "w": 12,
             "x": 10,
-            "y": 32
+            "y": 24
           },
           "id": 26,
           "options": {
@@ -2335,7 +2366,7 @@
             "h": 10,
             "w": 24,
             "x": 0,
-            "y": 115
+            "y": 34
           },
           "id": 17,
           "options": {
@@ -2442,7 +2473,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 125
+            "y": 44
           },
           "id": 11,
           "options": {
@@ -2494,7 +2525,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 24
+        "y": 26
       },
       "id": 18,
       "panels": [
@@ -2589,7 +2620,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 156
+            "y": 25
           },
           "id": 12,
           "options": {
@@ -2721,7 +2752,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 165
+            "y": 34
           },
           "id": 14,
           "options": {
@@ -2772,7 +2803,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 27
       },
       "id": 22,
       "panels": [
@@ -2973,7 +3004,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 66
+            "y": 26
           },
           "id": 15,
           "options": {
@@ -3124,5 +3155,5 @@
   "timezone": "browser",
   "title": "Cisco Syslog & SNMP Metrics",
   "uid": "adhq9z2",
-  "version": 39
+  "version": 44
 }
