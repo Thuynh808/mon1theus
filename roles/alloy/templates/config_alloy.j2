@@ -114,6 +114,18 @@ loki.source.file "cisco_switches" {
   forward_to = [loki.write.local.receiver]
 }
 
+local.file_match "fw1" {
+  path_targets = [{
+    __address__ = "localhost",
+    __path__    = "/var/log/fw1.log",
+    instance    = constants.hostname,
+    job         = "fw1-syslog",
+  }]
+}
+loki.source.file "fw1" {
+  targets    = local.file_match.fw1.targets
+  forward_to = [loki.write.local.receiver]
+}
 {% endif %}
 
 loki.write "local" {
