@@ -1,10 +1,12 @@
-# Listen for Cisco syslog on UDP 514
+# Listen for syslog on UDP 514
 module(load="imudp")
 input(type="imudp" port="514")
 
-# Always show sender IP, not whatever hostname is in the packet
 template(name="CiscoIPFormat" type="string"
          string="%timegenerated% %fromhost-ip% %msg%\n")
+
+template(name="fw1Format" type="string"
+         string="%timegenerated% %fromhost-ip% Severity: %syslogseverity-text% Program: %programname% Message: %msg%\n")
 
 # CSW1
 if ($fromhost-ip == '10.2.22.223') then {
@@ -35,3 +37,15 @@ if ($fromhost-ip == '10.2.22.225') then {
   )
   stop
 }
+
+
+# fw1
+if ($fromhost-ip == '10.2.22.193') then {
+  action(
+    type="omfile"
+    file="/var/log/fw1.log"
+    template="fw1Format"
+  )
+  stop
+}
+

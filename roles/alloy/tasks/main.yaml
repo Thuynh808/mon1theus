@@ -72,6 +72,7 @@
     - /var/log/cisco-csw1.log
     - /var/log/cisco-sw1.log
     - /var/log/cisco-sw2.log
+    - /var/log/fw1.log
   when: inventory_hostname in groups['mon_core']
 
 - name: manage Alloy config file
@@ -118,7 +119,7 @@
 - name: setup rsyslog for switch logs
   template:
     src: rsyslog_cisco.j2
-    dest: '/etc/rsyslog.d/30-cisco.conf'
+    dest: '/etc/rsyslog.d/sw_fw.conf'
   when: inventory_hostname in groups['mon_core']
   
 - name: give alloy user permissions to view logs
