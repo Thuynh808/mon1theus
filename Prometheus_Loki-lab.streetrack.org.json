@@ -19,7 +19,20 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 0,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": false,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Cisco Syslog & SNMP Metrics",
+      "tooltip": "",
+      "type": "link",
+      "url": "http://mon1.lab.streetrack.org:3000/d/adhq9z2/cisco-syslog-and-snmp-metrics?orgId=1&from=now-3h&to=now&timezone=browser&var-instance=csw1&var-ifName=$__all"
+    }
+  ],
   "panels": [
     {
       "datasource": {
@@ -1522,7 +1535,7 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -1530,114 +1543,108 @@
         "y": 26
       },
       "id": 19,
-      "panels": [
+      "panels": [],
+      "title": "Loki",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "loki",
+        "uid": "ff4rmomltpzb4d"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "footer": {
+              "reducers": []
+            },
+            "inspect": false,
+            "wrapText": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Line"
+            },
+            "properties": []
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "labelTypes"
+            },
+            "properties": []
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 23,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "id": 18,
+      "options": {
+        "cellHeight": "sm",
+        "frameIndex": 1,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "12.3.0",
+      "targets": [
         {
           "datasource": {
             "type": "loki",
             "uid": "ff4rmomltpzb4d"
           },
-          "description": "",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false,
-                "wrapText": true
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Line"
-                },
-                "properties": []
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "labelTypes"
-                },
-                "properties": []
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 23,
-            "w": 24,
-            "x": 0,
-            "y": 27
-          },
-          "id": 18,
-          "options": {
-            "cellHeight": "sm",
-            "frameIndex": 1,
-            "showHeader": true,
-            "sortBy": [
-              {
-                "desc": true,
-                "displayName": "Line"
-              }
-            ]
-          },
-          "pluginVersion": "12.3.0",
-          "targets": [
-            {
-              "datasource": {
-                "type": "loki",
-                "uid": "ff4rmomltpzb4d"
-              },
-              "direction": "backward",
-              "editorMode": "code",
-              "expr": "{job=\"system-logs\", instance=~\"$Host\"}",
-              "hide": false,
-              "legendFormat": "",
-              "queryType": "range",
-              "refId": "A"
-            }
-          ],
-          "timeFrom": "1h",
-          "title": "Logs",
-          "transformations": [
-            {
-              "id": "filterFieldsByName",
-              "options": {
-                "include": {
-                  "names": [
-                    "Line"
-                  ]
-                }
-              }
-            }
-          ],
-          "type": "table"
+          "direction": "backward",
+          "editorMode": "code",
+          "expr": "{job=~\"system-logs|fw1-syslog\", instance=\"$Host\"}",
+          "hide": false,
+          "legendFormat": "",
+          "queryType": "range",
+          "refId": "C"
         }
       ],
-      "title": "Loki",
-      "type": "row"
+      "timeFrom": "1h",
+      "title": "Logs",
+      "transformations": [
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "Line"
+              ]
+            }
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "preload": false,
@@ -1648,8 +1655,8 @@
     "list": [
       {
         "current": {
-          "text": "soc1.lab.streetrack.org",
-          "value": "soc1.lab.streetrack.org"
+          "text": "fw1",
+          "value": "fw1"
         },
         "definition": "label_values(up{job=\"metrics\"},instance)",
         "label": "Host",
@@ -1667,12 +1674,12 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Prometheus/Loki-lab.streetrack.org",
+  "title": "Prometheus/Loki - Nodes",
   "uid": "adfcd2c",
-  "version": 6
+  "version": 9
 }
