@@ -1,6 +1,8 @@
 # Mon1theus
 
-**Centralized Monitoring & Observability for a Routed Network**
+![Mon1theus – Centralized Observability Architecture](files/centralized_observability.png)
+
+**Centralized Monitoring & Observability for a Layer 3 Routed Network**
 
 Mon1theus is a centralized monitoring and observability stack built to support a **Layer 3 routed homelab environment**. It provides metrics, logs, and alerts across Linux hosts, network infrastructure, and perimeter services using an Ansible-driven deployment model.
 
@@ -18,6 +20,8 @@ This project reflects how monitoring is typically introduced and operated in a s
 
 ## Network & Topology Context
 
+![Layer 3 Routing and Addressing Plan](files/net_config1.png)
+
 The monitoring stack operates within a **collapsed-core Layer 3 network**:
 
 * Three Layer 3 switches (core + access)
@@ -34,6 +38,8 @@ This design intentionally mirrors modern routed campus and data center access mo
 
 
 ## Monitoring Architecture
+
+![Telemetry Collection and Aggregation Flow](files/arch_telemetry1.png)
 
 ### Central Monitoring Node
 
@@ -138,22 +144,55 @@ Each component can be installed or updated independently.
 
 After deployment:
 
-* Prometheus confirms scrape health and alert evaluation
+* Prometheus confirms scrape health 
 * Grafana dashboards verify metric and log ingestion
 * SNMP metrics confirm network device visibility
 * Syslog files confirm correct routing and labeling
 
 Operational validation focuses on data integrity rather than service status alone.
 
+### Failover and Event Validation
 
-## Limitations & Assumptions
+![Failover and Interface State Transitions](files/failover1.png)
 
-* Single Prometheus instance (no HA)
-* Local filesystem storage for Loki
-* Alertmanager configured with a placeholder receiver
-* No TLS between internal services (lab scope)
+<div align=center>
+   <em>
+      During an active load test, the Layer 3 EtherChannel between access switches was intentionally taken offline to simulate a link failure.
+   </em>
+</div>
+<br>
 
-These choices reflect the intended scale and can be revisited as the environment grows.
+Observed behavior:
+  * The EtherChannel interfaces transitioned to a down state
+  * OSPF reconverged and rerouted traffic northbound through the core switch (`CSW1`)
+  * Interface-down counters increased as expected
+  * Traffic throughput remained stable, confirming successful rerouting
+  * Metrics and syslog ingestion continued without interruption
+
+This confirms that the routed design properly absorbs link failures without service impact and that monitoring remains accurate during topology changes.
+
+<br>
+
+![Failover and Interface State Transitions](files/failover2.png)
+
+<div align=center>
+   <em>
+      After restoring the EtherChannel, traffic automatically rebalanced across the access layer.
+   </em>
+</div>
+<br>
+
+Observed behavior:
+  * Interfaces returned to an up state
+  * OSPF adjacencies were re-established
+  * Traffic shifted back to the original east–west path through `SW1` and `SW2`
+  * Interface-down counters returned to zero
+  * Error and discard counters reflected only the earlier unplug events
+  * No lingering routing instability was observed
+
+This validates correct OSPF convergence, clean recovery behavior, and accurate post-failure telemetry.
+
+> **Operational Insight:** Telemetry accurately reflects real network behavior during failure and recovery, making the platform reliable for troubleshooting and incident response.
 
 
 ## Future Work
