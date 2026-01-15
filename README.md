@@ -1,8 +1,6 @@
-# Mon1theus
+# Mon1theus: An Enterprise Observability Platform
 
 ![Mon1theus – Centralized Observability Architecture](files/centralized_observability.png)
-
-**Centralized Monitoring & Observability for a Layer 3 Routed Network**
 
 Mon1theus is a centralized monitoring and observability stack built to support a **Layer 3 routed homelab environment**. It provides metrics, logs, and alerts across Linux hosts, network infrastructure, and perimeter services using an Ansible-driven deployment model.
 
